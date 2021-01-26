@@ -51,10 +51,11 @@
 
                     <div class="row"> <!-- Third row -->
                         <div class="col-sm">
-                           <a href="https://www.w3schools.com">{{jobapplication.applicationlink}}</a>
+                           <a v-bind:href="jobapplication.applicationlink">{{jobapplication.applicationlink}}</a>
                         </div>
                         <div class="col-sm">
-                            <span class="float-right"><button type="button" class="btn btn-primary"><router-link to="/create" id="card-click">Endre på søknad</router-link></button></span>
+                            <span class="float-right"><button type="button" class="btn btn-primary">Endre på søknad</button></span>
+                            <span class="float-right mr-3"><button type="button" v-on:click="deleteJobapplication(jobapplication.id)" class="btn btn-danger">Slett søknad</button></span>
                         </div>
                     </div>
                 </div>
@@ -99,6 +100,16 @@
                         this.isFetched = true;
                     });
             },
+            deleteJobapplication(id) {
+                fetch('api/jobapplication/' + id, {
+                    method: 'delete'
+                })
+                .then(data => {
+                    alert('Søknad slettet!');
+                    this.getJobapplications();
+                })
+                .catch(err => console.log(err))
+            }
         }
     }
 </script>
