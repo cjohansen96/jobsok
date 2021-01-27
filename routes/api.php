@@ -20,7 +20,7 @@ Route::get('jobapplication/{id}', 'App\Http\Controllers\JobapplicationController
 Route::post('jobapplication', 'App\Http\Controllers\JobapplicationController@store');
 
 // Update jobapplication
-Route::post('jobapplication', 'App\Http\Controllers\JobapplicationController@store');
+Route::put('jobapplication', 'App\Http\Controllers\JobapplicationController@store');
 
 // Delete jobapplication
 Route::delete('jobapplication/{id}', 'App\Http\Controllers\JobapplicationController@destroy');

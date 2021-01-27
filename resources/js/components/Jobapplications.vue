@@ -54,13 +54,20 @@
                            <a v-bind:href="jobapplication.applicationlink">{{jobapplication.applicationlink}}</a>
                         </div>
                         <div class="col-sm">
-                            <span class="float-right"><button type="button" class="btn btn-primary">Endre på søknad</button></span>
-                            <span class="float-right mr-3"><button type="button" v-on:click="deleteJobapplication(jobapplication.id)" class="btn btn-danger">Slett søknad</button></span>
+                            <span class="float-right"><button type="button" class="btn btn-primary border border-secondary">Endre på søknad</button></span>
+                            <span class="float-right mr-3"><button  type="button" class="btn btn-danger border border-secondary" v-on:click="deleteJobapplication(jobapplication.id)">Slett søknad</button></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <nav aria-label="Page navigation example"> <!-- Pagination -->
+            <ul class="pagination">
+                <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link" href="#" v-on:click="getJobapplications(pagination.prev_page_url)">Previous</a></li>
+                <li class="page-item disabled"><a class="page-link text-dark" href="#">Page {{pagination.current_page}} of {{pagination.last_page}}</a></li>
+                <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item"><a class="page-link" href="#" v-on:click="getJobapplications(pagination.next_page_url)">Next</a></li>
+            </ul>
+       </nav>
     </div>
 </template>
 
@@ -71,9 +78,9 @@
                 jobapplications: [],
                 isFetched: false,
                 totalJobapplications: 0,
+                pageination: {},
 
                 userSelectedSorting: "Dato sendt",
-                isEdit: false
             }
         },
 
@@ -91,14 +98,29 @@
         },
 
         methods: {
-            getJobapplications() {
-               fetch('api/jobapplications')
+            getJobapplications(page_url) {
+                let vm = this;
+                page_url = page_url || 'api/jobapplications'
+               fetch(page_url)
                     .then(res => res.json())
                     .then(res => {
                         this.jobapplications = res.data;
                         this.totalJobapplications = res.meta.total;
                         this.isFetched = true;
-                    });
+                        vm.makePageination(res.meta, res.links)
+                        console.log(res);
+                    })
+                    .catch(err => console.log(err));
+            },
+            makePageination(meta, links) {
+                let pagination = {
+                    current_page: meta.current_page,
+                    last_page: meta.last_page,
+                    next_page_url: links.next,
+                    prev_page_url: links.prev
+                }
+
+                this.pagination = pagination;
             },
             deleteJobapplication(id) {
                 fetch('api/jobapplication/' + id, {

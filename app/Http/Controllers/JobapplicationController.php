@@ -19,7 +19,7 @@ class JobapplicationController extends Controller
     public function index()
     {
         // Get jobapplications
-        $jobapplications = Jobapplication::paginate(15);
+        $jobapplications = Jobapplication::paginate(10);
 
         // Return collection of jobapplications as resource
         return JobapplicationResource::collection($jobapplications);
