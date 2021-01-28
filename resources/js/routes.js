@@ -10,4 +10,8 @@ export default [
         path: '/create',
         component: CreateJobapplication
     },
+    {
+        path: '/update/:id',
+        component: CreateJobapplication
+    },
 ]
