@@ -54,7 +54,7 @@
                            <a v-bind:href="jobapplication.applicationlink">{{jobapplication.applicationlink}}</a>
                         </div>
                         <div class="col-sm">
-                            <span class="float-right"><button type="button" class="btn btn-primary border border-secondary">Endre på søknad</button></span>
+                            <span class="float-right"><button type="button" class="btn btn-primary border border-secondary"><router-link v-bind:to="'/update/' + jobapplication.id" id="card-click">Endre på søknad</router-link></button></span>
                             <span class="float-right mr-3"><button  type="button" class="btn btn-danger border border-secondary" v-on:click="deleteJobapplication(jobapplication.id)">Slett søknad</button></span>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
         <nav aria-label="Page navigation example"> <!-- Pagination -->
             <ul class="pagination">
                 <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link" href="#" v-on:click="getJobapplications(pagination.prev_page_url)">Previous</a></li>
-                <li class="page-item disabled"><a class="page-link text-dark" href="#">Page {{pagination.current_page}} of {{pagination.last_page}}</a></li>
+                <li class="page-item disabled"><a class="page-link text-dark" href="#">Side {{pagination.current_page}} av {{pagination.last_page}}</a></li>
                 <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item"><a class="page-link" href="#" v-on:click="getJobapplications(pagination.next_page_url)">Next</a></li>
             </ul>
        </nav>
@@ -101,14 +101,13 @@
             getJobapplications(page_url) {
                 let vm = this;
                 page_url = page_url || 'api/jobapplications'
-               fetch(page_url)
+                fetch(page_url)
                     .then(res => res.json())
                     .then(res => {
                         this.jobapplications = res.data;
                         this.totalJobapplications = res.meta.total;
                         this.isFetched = true;
                         vm.makePageination(res.meta, res.links)
-                        console.log(res);
                     })
                     .catch(err => console.log(err));
             },
@@ -123,14 +122,16 @@
                 this.pagination = pagination;
             },
             deleteJobapplication(id) {
-                fetch('api/jobapplication/' + id, {
-                    method: 'delete'
-                })
-                .then(data => {
-                    alert('Søknad slettet!');
-                    this.getJobapplications();
-                })
-                .catch(err => console.log(err))
+                if(confirm('Er du sikker?')) {
+                    fetch('api/jobapplication/' + id, {
+                        method: 'delete'
+                    })
+                    .then(data => {
+                        alert('Jobbsøknad slettet!');
+                        this.getJobapplications();
+                    })
+                    .catch(err => console.log(err))
+                }
             }
         }
     }
