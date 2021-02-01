@@ -36,7 +36,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                   <ul class="navbar-nav">
                     <li class="nav-item">
-                      <a class="nav-link">Jobbsøknader</a>
+                      <a class="nav-link"><router-link :to="'/'">Jobbsøknader</router-link></a>
                     </li>
                     </li>
                   </ul>

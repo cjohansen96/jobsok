@@ -10,9 +10,9 @@
                 <p>Sorter på:</p>
                 <div class="my-1 float-right">
                     <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" v-model="userSelectedSorting">
+                        <option>Standard</option>
                         <option>Dato sendt</option>
-                        <option>Intervju</option>
-                        <option>Avslag</option>
+                        <option>Selskap</option>
                         <option>Sted</option>
                     </select>
                 </div>
@@ -23,29 +23,29 @@
                 <div class="container">
                     <div class="row mb-3"> <!-- First row -->
                         <div class="col-sm">
-                            <h3>Selskap: {{jobapplication.company}}</h3>
+                            <h3><span class="first-word">Selskap:</span> {{jobapplication.company}}</h3>
                             
                         </div>
                         <div class="col-sm">
-                            <h3>Stilling: {{jobapplication.jobtitle}}</h3>
+                            <h3><span class="first-word">Stilling:</span> {{jobapplication.jobtitle}}</h3>
                         </div>
                         <div class="col-sm">
-                            <h3>Status: {{jobapplication.status}}</h3>
+                            <h3><span class="first-word">Status:</span> {{jobapplication.status}}</h3>
                         </div>
                     </div>
 
                     <div class="row mb-3"> <!-- Second row -->
                         <div class="col-sm">
-                            Dato sendt: {{jobapplication.date_sent}}
+                            <span class="first-word">Dato sendt:</span> {{jobapplication.date_sent}}
                         </div>
                         <div class="col-sm">
-                            Søknadsfrist: {{jobapplication.date_jobexpired}}
+                            <span class="first-word">Søknadsfrist:</span> {{jobapplication.date_jobexpired}}
                         </div>
                         <div class="col-sm">
-                            Sted: {{jobapplication.place}}
+                            <span class="first-word">Sted:</span> {{jobapplication.place}}
                         </div>
                         <div class="col-sm">
-                            Telefon: {{jobapplication.phone}}
+                            <span class="first-word">Telefon:</span> {{jobapplication.phone}}
                         </div>
                     </div>
 
@@ -80,21 +80,29 @@
                 totalJobapplications: 0,
                 pageination: {},
 
-                userSelectedSorting: "Dato sendt",
+                userSelectedSorting: "Standard",
             }
         },
 
         created() {
-            this.getJobapplications();
+           this.getJobapplications();
         },
 
         watch: {
-            /* Watcher om bruker har sortert 
             userSelectedSorting: function() {
-                if (this.userSelectedSorting == "Dato sendt" ) {
-                    this.jobapplications.sort((a, b) => (a.applied_date < b.applied_date) ? 1 : -1)
+                if (this.userSelectedSorting == "Standard" ) {
+                    this.getJobapplications();
                 } 
-            },*/
+                else if(this.userSelectedSorting == "Dato sendt") {
+                    this.getJobapplications("api/jobapplications/date_sent");
+                }
+                else if(this.userSelectedSorting == "Selskap") {
+                    this.getJobapplications("api/jobapplications/company");
+                }
+                else if(this.userSelectedSorting == "Sted") {
+                    this.getJobapplications("api/jobapplications/place");
+                }
+            },
         },
 
         methods: {
@@ -140,6 +148,11 @@
 <style scoped>
 .fontstyle {
     font-family: Arial, Helvetica, sans-serif;
+}
+.first-word {
+    text-decoration: underline;
+    font-weight: 600;
+    font-style: italic;
 }
 
 </style>

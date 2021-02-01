@@ -19,10 +19,26 @@ class JobapplicationController extends Controller
     public function index()
     {
         // Get jobapplications
-        $jobapplications = Jobapplication::paginate(10);
+        $jobapplications = Jobapplication::orderBy('created_at', 'desc')->paginate(10);
 
         // Return collection of jobapplications as resource
         return JobapplicationResource::collection($jobapplications);
+    }
+
+    public function orderbyJobapplications($orderby)
+    {
+        if($orderby = "date_sent") {
+            $jobapplications = Jobapplication::orderBy('date_sent', 'desc')->paginate(10);
+            return JobapplicationResource::collection($jobapplications);
+        }
+        if($orderby = "company"){
+            $jobapplications = Jobapplication::orderBy('company', 'desc')->paginate(10);
+            return JobapplicationResource::collection($jobapplications);
+        }
+        if($orderby = "place"){
+            $jobapplications = Jobapplication::orderBy('place', 'desc')->paginate(10);
+            return JobapplicationResource::collection($jobapplications);
+        }
     }
 
     /**

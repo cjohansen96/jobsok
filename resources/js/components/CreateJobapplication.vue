@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <router-link :to="'/'" style="text-decoration: underline">Tilbake</router-link>
         <h1 v-if="!isEdit">Legg til ny jobbøsknad</h1>
         <h1 v-else>Endre på jobbsøknad</h1>
         <form>

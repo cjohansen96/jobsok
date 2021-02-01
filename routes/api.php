@@ -13,6 +13,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // List Jobapplications
 Route::get('jobapplications', 'App\Http\Controllers\JobapplicationController@index');
 
+// List jobapplication by order value
+Route::get('jobapplications/{orderby}', 'App\Http\Controllers\JobapplicationController@orderbyJobapplications');
+
 // List Single jobapplication
 Route::get('jobapplication/{id}', 'App\Http\Controllers\JobapplicationController@show');
 
